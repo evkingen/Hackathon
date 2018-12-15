@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">HackathonAndroid</string>
-    <string name="create_text_btn"> Создать</string>
-    <string name="favorites_text_btn"> Избранное</string>
-    <string name="contact_text_btn"> Контакты</string>
-    <string name="map_text_btn"> Карта</string>
+    <string name="create_text_btn">Создать</string>
+    <string name="favorites_text_btn">Избранное</string>
+    <string name="contact_text_btn">Контакты</string>
+    <string name="map_text_btn">Карта</string>
+    <string name="home_text_btn">Главная</string>
 </resources>
