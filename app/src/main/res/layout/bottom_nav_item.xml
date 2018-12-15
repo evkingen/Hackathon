@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <item
+        android:id="@+id/create_btn"
+        android:icon="@drawable/plus_3"
+        android:title="@string/create_text_btn" />
+
+    <item
+        android:id="@+id/favorites_btn"
+        android:icon="@drawable/star"
+        android:title="@string/favorites_text_btn" />
+
+    <item
+        android:id="@+id/contacts_btn"
+        android:icon="@drawable/user"
+        android:title="@string/contact_text_btn" />
+
+    <item
+        android:id="@+id/map_btn"
+        android:icon="@drawable/placeholder"
+        android:title="@string/map_text_btn" />
+
+</LinearLayout>
