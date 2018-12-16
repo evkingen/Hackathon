@@ -5,4 +5,9 @@
     <string name="contact_text_btn">Контакты</string>
     <string name="map_text_btn">Карта</string>
     <string name="home_text_btn">Главная</string>
+    <string name="addFoto">Add Foto</string>
+    <string name="saveMarker">Save Marker</string>
+    <string name="title_activity_maps">111</string>
+    <string name="title">Заголовок</string>
+    <string name="fullText">Описание</string>
 </resources>
