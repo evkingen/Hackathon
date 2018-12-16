@@ -5,4 +5,5 @@
     <string name="contact_text_btn">Контакты</string>
     <string name="map_text_btn">Карта</string>
     <string name="home_text_btn">Главная</string>
+    <string name="error_havent_event_text">Ничего не найдено</string>
 </resources>
