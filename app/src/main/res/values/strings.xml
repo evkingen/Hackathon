@@ -17,4 +17,8 @@
     <string name="button_text">Log in</string>
     <string name="password_hint">Input your password</string>
     <string name="username_hint">Input your name</string>
+    <string name="addFoto">Add Foto</string>
+    <string name="saveMarker">Save Marker</string>
+    <string name="title">Заголовок</string>
+    <string name="fullText">Описание</string>
 </resources>
