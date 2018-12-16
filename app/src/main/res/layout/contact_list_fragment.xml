@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:divider="@null" />
+
+    <TextView
+        android:id="@+id/tv_add_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp"
+        android:gravity="center"
+        android:text="У вас нет друзей. Добавьте из списка контактов"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_add_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add_circle_outline_black_24dp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="30dp"
+        android:layout_margin="16dp" />
+
+</RelativeLayout>
