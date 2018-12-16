@@ -5,6 +5,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +27,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -77,6 +79,7 @@ public class MapFragment extends Fragment {
     private LatLng[] mLikelyPlaceLatLngs;
     private Disposable disposable;
     private LinearLayout mViewBottom;
+    private BottomSheetBehavior bottomSheetBehavior;
     public static MapFragment newInstance() {
         return new MapFragment();
     }
@@ -85,11 +88,13 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_maps, container, false);
-        MapView mapView = view.findViewById(R.id.map_view);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         mViewBottom = view.findViewById(R.id.bottom_sheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(mViewBottom);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
-        mapView.getMapAsync(new OnMapReadyCallback() {
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
@@ -97,7 +102,7 @@ public class MapFragment extends Fragment {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
                         Toast.makeText(getActivity().getApplicationContext(),"CLICK",Toast.LENGTH_LONG).show();
-                        mViewBottom.setVisibility(View.VISIBLE);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                         return true;
                     }
                 });
@@ -120,13 +125,13 @@ public class MapFragment extends Fragment {
     }
     private void requestOnServer() {
         if(disposable!=null) disposable.dispose();
-        Toast.makeText(getContext(),"requestOnServer",Toast.LENGTH_SHORT).show();/*
+        Toast.makeText(getContext(),"requestOnServer",Toast.LENGTH_SHORT).show();
         disposable = getInstance()
                 .getEndPoint()
                 .search_target(1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::showMarkers,e->Log.e(TAG,Log.getStackTraceString(e)));*/
+                .subscribe(this::showMarkers,e->Log.e(TAG,Log.getStackTraceString(e)));
     }
 
     private void getDeviceLocation() {

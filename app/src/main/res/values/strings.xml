@@ -11,4 +11,10 @@
     <string name="option_get_place">Get place</string>
     <string name="pick_place">Choose a place</string>
     <string name="iv_place_text">PlaceImage</string>
+    <string name="blue">FIRST</string>
+    <string name="brown">SECOND</string>
+    <string name="main_theme">DEFAULT</string>
+    <string name="button_text">Log in</string>
+    <string name="password_hint">Input your password</string>
+    <string name="username_hint">Input your name</string>
 </resources>
