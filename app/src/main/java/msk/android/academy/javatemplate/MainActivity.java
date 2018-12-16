@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements FragmentListener,
                 return true;
             }
         });
+
         AuthorizationFragment authorizationFragment = AuthorizationFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, authorizationFragment);

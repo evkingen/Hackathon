@@ -108,4 +108,10 @@ public class ListEventFragment extends Fragment {
                     break;
             }
         }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        dispose.dispose();
+    }
 }
