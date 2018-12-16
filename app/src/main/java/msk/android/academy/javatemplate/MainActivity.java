@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements FragmentListener 
                          selectedFragment = FavoritesFragment.newInstance();
                          break;
                      case R.id.contacts_btn:
-                         selectedFragment = ContactListFragment.newInstance();
-
+                         selectedFragment = ContactsFragment.newInstance();
+                         break;
                      case R.id.map_btn:
                          selectedFragment = MapFragment.newInstance();
                  }
@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements FragmentListener 
                  FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                  transaction.replace(R.id.frame_layout, selectedFragment);
                  transaction.commit();
-
                  return true;
              }
          });
