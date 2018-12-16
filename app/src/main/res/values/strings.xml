@@ -21,4 +21,6 @@
     <string name="saveMarker">Save Marker</string>
     <string name="title">Заголовок</string>
     <string name="fullText">Описание</string>
+    <string name="error_havent_event_text">Нет данных</string>
+
 </resources>

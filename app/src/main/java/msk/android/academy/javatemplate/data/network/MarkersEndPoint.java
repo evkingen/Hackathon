@@ -4,6 +4,8 @@ import io.reactivex.Single;
 import msk.android.academy.javatemplate.data.model.MarkersDTO;
 import com.google.gson.JsonObject;
 
+import java.util.List;
+
 import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -22,6 +24,9 @@ public interface MarkersEndPoint {
             @Query("fullText") String fullText,
             @Query("imageUrl") String imageUrl
     );
+
+    @GET("all")
+    Single<List<MarkersDTO>> search_all();
 
     @GET("large")
     Single<MarkersDTO> search_target(@Query("id") int id);
