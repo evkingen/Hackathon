@@ -1,3 +1,4 @@
+/*
 package msk.android.academy.javatemplate;
 
 import android.content.DialogInterface;
@@ -103,21 +104,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         mViewBottom = findViewById(R.id.bottom_sheet);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
 
     }
 
     private void requestOnServer() {
         if(disposable!=null) disposable.dispose();
         Toast.makeText(getApplicationContext(),"requestOnServer",Toast.LENGTH_SHORT).show();
-        disposable = getInstance()
+       */
+/* disposable = getInstance()
                 .getEndPoint()
                 .search_target(1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::showMarkers,e->Log.e(TAG,Log.getStackTraceString(e)));
+                .subscribe(this::showMarkers,e->Log.e(TAG,Log.getStackTraceString(e)));*//*
+
     }
 
     private void showMarkers(MarkersDTO markersData) {
@@ -141,7 +144,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    /**
+    */
+/**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
@@ -149,11 +153,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
-     */
-    /**
+     *//*
+
+    */
+/**
      * Manipulates the map when it's available.
      * This callback is triggered when the map is ready to be used.
-     */
+     *//*
+
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
@@ -202,14 +209,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    /**
+    */
+/**
      * Gets the current location of the device, and positions the map's camera.
-     */
+     *//*
+
     private void getDeviceLocation() {
-        /*
+        */
+/*
          * Get the best and most recent location of the device, which may be null in rare
          * cases when a location is not available.
-         */
+         *//*
+
         try {
             if (mLocationPermissionGranted) {
                 Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
@@ -238,15 +249,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    /**
+    */
+/**
      * Prompts the user for permission to use the device location.
-     */
+     *//*
+
     private void getLocationPermission() {
-        /*
+        */
+/*
          * Request location permission, so that we can get the location of the
          * device. The result of the permission request is handled by a callback,
          * onRequestPermissionsResult.
-         */
+         *//*
+
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -258,9 +273,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    /**
+    */
+/**
      * Handles the result of the request for location permissions.
-     */
+     *//*
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[],
@@ -278,10 +295,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         updateLocationUI();
     }
 
-    /**
+    */
+/**
      * Prompts the user to select the current place from a list of likely places, and shows the
      * current place on the map - provided the user has granted location permission.
-     */
+     *//*
+
     private void showCurrentPlace() {
         if (mMap == null) {
             return;
@@ -356,9 +375,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    /**
+    */
+/**
      * Displays a form allowing the user to select a place from a list of likely places.
-     */
+     *//*
+
     private void openPlacesDialog() {
         // Ask the user to choose the place where they are now.
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
@@ -391,9 +412,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .show();
     }
 
-    /**
+    */
+/**
      * Updates the map's UI settings based on whether the user has granted location permission.
-     */
+     *//*
+
     private void updateLocationUI() {
         if (mMap == null) {
             return;
@@ -420,3 +443,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return true;
     }
 }
+*/
