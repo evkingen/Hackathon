@@ -8,5 +8,5 @@ import retrofit2.http.Query;
 public interface MarkersEndPoint {
 
     @GET("large")
-    Single<MarkersDTO> search(@Query("id") int id);
+    Single<MarkersDTO> search_target(@Query("id") int id);
 }

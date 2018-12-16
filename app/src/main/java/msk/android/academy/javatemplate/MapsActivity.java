@@ -2,6 +2,7 @@ package msk.android.academy.javatemplate;
 
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -13,18 +14,23 @@ import android.util.Log;
 import android.view.View;
 import android.view.textclassifier.TextLinks;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -52,7 +58,7 @@ import okhttp3.Response;
 
 import static msk.android.academy.javatemplate.data.network.RestApi.getInstance;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private static final String TAG = MapsActivity.class.getSimpleName();
@@ -87,6 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String[] mLikelyPlaceAttributions;
     private LatLng[] mLikelyPlaceLatLngs;
     private Disposable disposable;
+    private LinearLayout mViewBottom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,50 +101,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        requestOnServer();
-
+        mViewBottom = findViewById(R.id.bottom_sheet);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
     }
 
     private void requestOnServer() {
-        String myUrl = "http://192.168.4.183:8181/all";
-        OkHttpClient client = new OkHttpClient().newBuilder().connectTimeout(30,TimeUnit.SECONDS).build();
-
-        Request request = new Request.Builder().get().url(myUrl).build();
-
-        Call call =client.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e(TAG,e.getMessage());
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.e(TAG,"response");
-            }
-        });
-//        try{
-//            Response response = call.execute();
-//            String contentAsString = response.body().string();
-//            Toast.makeText(getApplicationContext(),""+contentAsString,Toast.LENGTH_SHORT).show();
-//        }catch(IOException e){
-//            e.printStackTrace();
-//        }
-//        if(disposable!=null) disposable.dispose();
-//        Toast.makeText(getApplicationContext(),"requestOnServer",Toast.LENGTH_SHORT).show();
-//        disposable = getInstance()
-//                .getEndPoint()
-//                .search(1)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(this::showMarkers,e->Log.e(TAG,Log.getStackTraceString(e)));
+        if(disposable!=null) disposable.dispose();
+        Toast.makeText(getApplicationContext(),"requestOnServer",Toast.LENGTH_SHORT).show();
+        disposable = getInstance()
+                .getEndPoint()
+                .search_target(1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::showMarkers,e->Log.e(TAG,Log.getStackTraceString(e)));
     }
 
     private void showMarkers(MarkersDTO markersData) {
@@ -146,8 +126,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             CoordinatesDTO coordinatesDTO = markersData.getCoordinatesDTO();
             LatLng latLng = new LatLng(coordinatesDTO.getLatitude(),coordinatesDTO.getLongitude());
             mMap.addMarker(new MarkerOptions().position(latLng).title(markersData.getTitle()));
+            addCustomWindowInfo(markersData);
         }
     }
+
+    private void addCustomWindowInfo(MarkersDTO markersData) {
+        TextView titleDetailView = mViewBottom.findViewById(R.id.title_detail);
+        ImageView imageView = mViewBottom.findViewById(R.id.iv_place);
+        TextView textView = mViewBottom.findViewById(R.id.tv_place);
+
+        titleDetailView.setText(markersData.getTitle());
+        textView.setText(markersData.getFullText());
+        Glide.with(imageView.getContext()).load(markersData.getImageUrl()).into(imageView);
+
+    }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -164,38 +157,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-
+        mMap.setOnMarkerClickListener(this);
+        requestOnServer();
         boolean success = mMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json)));
         if(!success) {
             Log.e(TAG, "Style parsing failed.");
         }
 
 
-        // Use a custom info window adapter to handle multiple lines of text in the
-        // info window contents.
-        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
-            @Override
-            // Return null here, so that getInfoContents() is called next.
-            public View getInfoWindow(Marker arg0) {
-                return null;
-            }
-
-            @Override
-            public View getInfoContents(Marker marker) {
-                // Inflate the layouts for the info window, title and snippet.
-                View infoWindow = getLayoutInflater().inflate(R.layout.custom_info_contents,
-                        (FrameLayout) findViewById(R.id.map), false);
-
-                TextView title = ((TextView) infoWindow.findViewById(R.id.title));
-                title.setText(marker.getTitle());
-
-                TextView snippet = ((TextView) infoWindow.findViewById(R.id.snippet));
-                snippet.setText(marker.getSnippet());
-
-                return infoWindow;
-            }
-        });
+//      //   Use a custom info window adapter to handle multiple lines of text in the
+//      //   info window contents.
+//        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+//
+//            @Override
+//            // Return null here, so that getInfoContents() is called next.
+//            public View getInfoWindow(Marker arg0) {
+//                return null;
+//            }
+//
+//            @Override
+//            public View getInfoContents(Marker marker) {
+//                // Inflate the layouts for the info window, title and snippet.
+//                View infoWindow = getLayoutInflater().inflate(R.layout.custom_info_contents,
+//                        findViewById(R.id.map), false);
+//
+//                TextView title = ((TextView) infoWindow.findViewById(R.id.title));
+//                title.setText(marker.getTitle());
+//
+//                TextView snippet = ((TextView) infoWindow.findViewById(R.id.snippet));
+//                snippet.setText(marker.getSnippet());
+//
+//                return infoWindow;
+//            }
+//        });
 
         // Prompt the user for permission.
         getLocationPermission();
@@ -417,5 +411,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Toast.makeText(getApplicationContext(),"CLICK",Toast.LENGTH_LONG).show();
+        mViewBottom.setVisibility(View.VISIBLE);
+        return true;
     }
 }
