@@ -27,7 +27,7 @@ public class AuthorizationActivity extends AppCompatActivity {
                 if (mUsername.getText() != null) {
                     String username = mUsername.getText().toString();
                     if (i == EditorInfo.IME_ACTION_GO && username.equals(EXIST_NAME)) {
-                        mContainerUsername.setError("This username alredy exist!");
+                        mContainerUsername.setError("This username already exist!");
                     } else {
                         mContainerUsername.setError(EMPTY_STRING);
                     }
