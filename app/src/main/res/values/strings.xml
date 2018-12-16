@@ -23,4 +23,6 @@
     <string name="fullText">Описание</string>
     <string name="error_havent_event_text">Нет данных</string>
 
+    <string name="button_sign_in">Sign In</string>
+    <string name="button_sign_up">Sign Up</string>
 </resources>
