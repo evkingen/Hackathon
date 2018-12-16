@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,4 +50,13 @@ public class MainActivity extends AppCompatActivity {
              }
          });
     }
+
+    @Override
+    public void onReplace(Fragment fragment, String tag) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .addToBackStack(tag)
+                .commit();
+    }
+
 }

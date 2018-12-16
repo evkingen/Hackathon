@@ -67,4 +67,3 @@ dependencies {
 
 //Uncomment to use firebase
 //apply plugin: 'com.google.gms.google-services'
-
