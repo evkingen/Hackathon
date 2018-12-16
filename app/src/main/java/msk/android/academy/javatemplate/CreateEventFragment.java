@@ -25,7 +25,7 @@ import io.reactivex.schedulers.Schedulers;
 import static msk.android.academy.javatemplate.data.network.RestApi.getInstance;
 
 public class CreateEventFragment extends Fragment {
-    private static final String TAG = MapsActivity.class.getSimpleName();
+    private static final String TAG = CreateEventFragment.class.getSimpleName();
     public static CreateEventFragment newInstance() {
         return new CreateEventFragment();
     }
