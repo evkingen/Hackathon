@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -94,15 +97,30 @@ public class MapFragment extends Fragment {
         bottomSheetBehavior = BottomSheetBehavior.from(mViewBottom);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
+        View zoomControls = mapFragment.getView().findViewById(0x1);
+
+        RelativeLayout.LayoutParams params_zoom = (RelativeLayout.LayoutParams) zoomControls.getLayoutParams();
+
+//        params_zoom.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        params_zoom.setMargins(30,30,30,30);
+        zoomControls.setLayoutParams(params_zoom);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
+
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
                         Toast.makeText(getActivity().getApplicationContext(),"CLICK",Toast.LENGTH_LONG).show();
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        CameraPosition cameraPosition = new CameraPosition.Builder().target(marker.getPosition()).zoom(14).build();
+                        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                        if(marker.getTag()!=null) {
+                            addCustomWindowInfo((MarkersDTO) marker.getTag());
+                            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        }
                         return true;
                     }
                 });
@@ -123,12 +141,13 @@ public class MapFragment extends Fragment {
         });
         return view;
     }
+
     private void requestOnServer() {
         if(disposable!=null) disposable.dispose();
         Toast.makeText(getContext(),"requestOnServer",Toast.LENGTH_SHORT).show();
         disposable = getInstance()
                 .getEndPoint()
-                .search_target(1)
+                .search_all()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::showMarkers,e->Log.e(TAG,Log.getStackTraceString(e)));
@@ -207,15 +226,20 @@ public class MapFragment extends Fragment {
         updateLocationUI();
     }
 
-    private void showMarkers(MarkersDTO markersData) {
-        Log.d(TAG,"showMarkers");
+    private void showMarkers(List<MarkersDTO> markersData) {
+        Log.d(TAG,"showMarker");
         if (mMap!=null) {
-            CoordinatesDTO coordinatesDTO = markersData.getCoordinatesDTO();
-            LatLng latLng = new LatLng(coordinatesDTO.getLatitude(),coordinatesDTO.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(latLng).title(markersData.getTitle()));
-            addCustomWindowInfo(markersData);
+            for(int i = 0 ; i < markersData.size(); i++) {
+                CoordinatesDTO coordinatesDTO = markersData.get(i).getCoordinatesDTO();
+                LatLng latLng = new LatLng(coordinatesDTO.getLatitude(), coordinatesDTO.getLongitude());
+                Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(markersData.get(i).getTitle()));
+                marker.setTag(markersData.get(i));
+
+            }
         }
     }
+
+
 
     private void updateLocationUI() {
         if (mMap == null) {
