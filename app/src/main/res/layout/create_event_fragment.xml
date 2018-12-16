@@ -11,34 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/addFotoButton"
+
+        <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:src="@drawable/uteam"
+            android:layout_height="150dp"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="16dp"
-            android:background="@color/colorPrimaryDark"
-            android:textColor="@color/white"
-            android:text="@string/addFoto"
-            tools:ignore="MissingConstraints" />
-
-        <!--<ImageView-->
-            <!--android:id="@+id/imageView"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="150dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--app:layout_constraintTop_toBottomOf="@+id/addFotoButton"-->
-            <!--tools:ignore="MissingConstraints"-->
-            <!--tools:layout_editor_absoluteX="0dp" />-->
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="0dp" />
 
         <EditText
             android:id="@+id/editText3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="https://nashville.rubratings.com/images/listings/112380/WezO7Ic82lkGUBtm.jpg"
-            app:layout_constraintTop_toBottomOf="@+id/addFotoButton"
+            android:text="https://imgur.com/a/bZWvZqZ"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
             tools:layout_editor_absoluteX="0dp"
             tools:ignore="MissingConstraints" />
         <EditText

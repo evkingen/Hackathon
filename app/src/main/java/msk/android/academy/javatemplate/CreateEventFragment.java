@@ -36,14 +36,7 @@ public class CreateEventFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         final View fragmentView = inflater.inflate(R.layout.create_event_fragment, container, false);
-        final Button addFotoButton = (Button) fragmentView.findViewById(R.id.addFotoButton);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        addFotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
 
         final Button saveMarkerButton = (Button) fragmentView.findViewById(R.id.saveMarker);
 
@@ -59,7 +52,7 @@ public class CreateEventFragment extends Fragment {
 
                 disposable = getInstance()
                 .getEndPoint()
-                .set(1,55.7786102,37.6053241,title,fullText,imageURL)
+                .set(1,0,0,title,fullText,imageURL)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::saveResult, e->Log.e(TAG,Log.getStackTraceString(e)));
